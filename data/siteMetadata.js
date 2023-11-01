@@ -10,16 +10,23 @@ const siteMetadata = {
   siteRepo: 'https://github.com/tkapa/kapa-dot-dev-v2',
   siteLogo: '/static/images/logo.png',
   socialBanner: '/static/images/twitter-card.png',
+  mastodon: '',
+  youtube: '',
   email: 'tylah@kapa.dev',
   github: 'https://github.com/tkapa',
   twitter: 'https://twitter.com/jadekapa',
   linkedin: 'https://www.linkedin.com/in/tylah-kapa/',
   locale: 'en-US',
-  // newsletter: {
-  //   // supports mailchimp, buttondown, convertkit, klaviyo, revue, emailoctopus
-  //   // Please add your .env file and modify it according to your selection
-  //   provider: 'buttondown',
-  // },
+  analytics: {
+    googleAnalytics: {
+      googleAnalyticsId: process.env.NEXT_GTAG, // e.g. G-XXXXXXX
+    },
+  },
+  newsletter: {
+    // supports mailchimp, buttondown, convertkit, klaviyo, revue, emailoctopus
+    // Please add your .env file and modify it according to your selection
+    provider: 'buttondown',
+  },
   comments: {
     // If you want to use an analytics provider you have to add it to the
     // content security policy in the `next.config.js` file.
