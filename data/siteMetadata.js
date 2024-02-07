@@ -2,7 +2,7 @@
 const siteMetadata = {
   title: 'Kapa dot dev',
   author: 'Tylah Kapa',
-  headerTitle: 'Kapa dot dev',
+  headerTitle: 'Kapa',
   description: 'A blog created by Tylah Kapa',
   language: 'en-us',
   theme: 'system', // system, dark or light

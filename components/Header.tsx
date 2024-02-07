@@ -5,6 +5,13 @@ import Link from './Link'
 import MobileNav from './MobileNav'
 import ThemeSwitch from './ThemeSwitch'
 import SearchButton from './SearchButton'
+import { Major_Mono_Display } from 'next/font/google'
+
+const majorFont = Major_Mono_Display({
+  weight: '400',
+  subsets: ['latin'],
+  display: 'swap',
+})
 
 const Header = () => {
   return (
@@ -12,11 +19,8 @@ const Header = () => {
       <div>
         <Link href="/" aria-label={siteMetadata.headerTitle}>
           <div className="flex items-center justify-between">
-            <div className="mr-3">
-              <Logo />
-            </div>
             {typeof siteMetadata.headerTitle === 'string' ? (
-              <div className="hidden h-6 text-2xl font-semibold sm:block">
+              <div className={`hidden text-6xl font-semibold sm:block ${majorFont.className}`}>
                 {siteMetadata.headerTitle}
               </div>
             ) : (
