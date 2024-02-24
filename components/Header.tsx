@@ -1,28 +1,33 @@
+"use client"
 import siteMetadata from '@/data/siteMetadata'
 import headerNavLinks from '@/data/headerNavLinks'
-import Logo from '@/data/logo.svg'
 import Link from './Link'
 import MobileNav from './MobileNav'
 import ThemeSwitch from './ThemeSwitch'
 import SearchButton from './SearchButton'
-import { Major_Mono_Display } from 'next/font/google'
+import ThemeImage from './ThemeImage'
 
-const majorFont = Major_Mono_Display({
-  weight: '400',
-  subsets: ['latin'],
-  display: 'swap',
-})
 
 const Header = () => {
+
+
   return (
-    <header className="flex items-center justify-between py-10">
+    <header className="flex items-center justify-between">
       <div>
         <Link href="/" aria-label={siteMetadata.headerTitle}>
+
           <div className="flex items-center justify-between">
             {typeof siteMetadata.headerTitle === 'string' ? (
-              <div className={`hidden text-6xl font-semibold sm:block ${majorFont.className}`}>
-                {siteMetadata.headerTitle}
-              </div>
+              <>
+                <span className=''>
+                  <ThemeImage 
+                    srcLight="/static/images/branding/full-logo-light.svg"
+                    srcDark="/static/images/branding/full-logo-dark.svg" 
+                    alt='' 
+                    width={150} 
+                    height={150} />
+                </span>
+              </>
             ) : (
               siteMetadata.headerTitle
             )}
