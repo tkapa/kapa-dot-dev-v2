@@ -1,5 +1,4 @@
 'use client'
-
 import { useTheme } from 'next-themes'
 import Image, { ImageProps } from 'next/image'
 import { useEffect, useState } from 'react'
@@ -11,7 +10,7 @@ type Props = Omit<ImageProps, 'src' | 'priority' | 'loading'> & {
  
 const ThemeImage = (props: Props) => {
   const [showLight, setShowLight] = useState(false)
-  const { theme, setTheme, resolvedTheme } = useTheme()
+  const { theme } = useTheme()
   const { srcLight, srcDark, ...rest } = props
  
   useEffect(() => {
