@@ -25,6 +25,8 @@ export default function Footer() {
           <Link href="https://github.com/timlrx/tailwind-nextjs-starter-blog">
             Tailwind Nextjs Theme
           </Link>
+          {' | '}
+          <Link href="https://www.2fernandez.com/">Logo by Joseph Fernandez</Link>
         </div>
       </div>
     </footer>
