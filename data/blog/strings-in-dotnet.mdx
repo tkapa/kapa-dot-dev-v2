@@ -1,0 +1,42 @@
+---
+title: 'Strings in .NET - Things I learned'
+date: '2024-04-17'
+tags: ['dotnet', '', 'csharp']
+draft: false
+summary: 'Strings are a fundamental part of programming. But how are they stored and compared in .NET?'
+---
+
+Here's what I looked like while learning about strings in .NET:
+
+![Cat screaming image](/static/images/cat-cry.jpg)
+
+## What do I think they are?
+I can't lie I have no idea how Strings are stored or even compared. But maybe we can find that out.
+
+## 5 things that I learned while looking at strings
+- Vectors are an iterable list :)
+- `Empty` is a constant that holds the empty string value. Determined at runtime.
+- Constructors will use `FastAllocateString(length)` to assign Memory and use `Buffer.Memmove` to move the `char[]` value provided into that memory.
+- Comparison `EqualsHelper`:
+  - Compares the `byte[]` of both strings as a `ref`.
+  - Tries to use the biggest Byte Vectors possible. Hardware must support it.
+  - Inspects the 2 strings in the largest "chunks" possible, determined by biggest Byte Vector.
+  - Compares the Bytes
+  - Uses `goto` to keep common returns e.g. NotEqual or Equal in one place.
+- I had no clue that you could use Preprocessor Directives to make optional `if/else` blocks.
+- There were a lot of comments referencing "EE", which apparently means "Execution Engine".
+
+``` csharp 
+# if DEBUG
+    if (isTrue){
+        ...
+    }
+    else
+# endif
+    {
+        ...
+    }
+```
+
+## What were the differences?
+There's a lot more than meets the eye when it comes to strings. They say you don't know what you don't know, and this exercise opened a can of worms when it comes to understanding .NET.
