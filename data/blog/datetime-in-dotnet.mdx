@@ -1,8 +1,8 @@
 ---
-title: 'Strings in .NET - Things I learned'
-date: '2024-04-17'
+title: 'DateTime in .NET - Things I learned (#1?)'
+date: '2024-04-19'
 tags: ['dotnet', 'braindump', 'csharp']
-draft: true
+draft: false 
 summary: 'Strings are a fundamental part of programming. But how are they stored and compared in .NET?'
 ---
 
@@ -24,11 +24,15 @@ Though I couldn't say what the default Time Zone information is and how that get
   - Bits 63-64 are to denote `DateTimeKind`
 - C# DateTimes have a range of 01/01/0001 12:00:00 AM until 31/12/9999 11:59:59 PM
 - The `DateTimeKind` Enum can be helpful for ensuring you're dealing with DateTimes Consistently
-
-- But what are Structs actually?
-- But what is Partial actually?
 - Wtf is the `|` Operator?
+  - It's called a Bitwise OR Operator
+  - It's REALLY interesting, and is used to combine add Bits together.
+  - I hate it
+- But what are Structs actually?
+  - There's some interesting differences between Structs and Classes outlined in this blog https://www.c-sharpcorner.com/blogs/difference-between-struct-and-class-in-c-sharp
 
 # What were the differences?
 
 I thought that the DateTime data was just a simple `ulong`, but it's clear that it's being used in a more complex way than I initially thought.
+I feel like I've barely scratched the surface on this one, so I'm excited to jump back into it later.
+
