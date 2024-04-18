@@ -16,7 +16,7 @@ const Header = () => {
               <ThemeImage
                 srcLight="/static/images/branding/full-logo-light.svg"
                 srcDark="/static/images/branding/full-logo-dark.svg"
-                alt=""
+                alt="Logo for kapa dot dev"
                 width={150}
                 height={150}
               />
