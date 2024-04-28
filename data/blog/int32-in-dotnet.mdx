@@ -1,0 +1,89 @@
+---
+title: 'Int32 in .NET - Things I learned (#1?)'
+date: '2024-04-19'
+tags: ['dotnet', 'braindump', 'csharp']
+draft: false 
+summary: 'This time I look at Int32, and it was NOT fun.'
+---
+
+Here's what I looked like while learning about `Int32` in .NET:
+
+![Yet another sad cat](/static/images/sad-cat-zoomed.jpg)
+
+# What do I think they are?
+
+After doing DateTime, I'm a bit more accustomed to thinking about things in bits.
+
+I assume that an `Int32` is just a 32 Bit integer. I believe that since it is unsigned, then there must be 1 bit reserved for denoting positive or negative numbers.
+
+Comparison should be easy, maybe the bits are assessed individually? I'm curious to know how basic math operations are performed.
+
+# 5 things that I learned while looking at Int32
+- `int` is a shortcut to `Int32`. I panicked a little bit thinking they were different for some reason.
+- The `MaxValue` of an `Int32` is `2147483647` (One bit is reserved as expected).
+- The `MinValue` of an `Int32` is `-2147483648`
+- `{{NUMBER}}U` is shorthand for `UInt32` (kinda handy)
+- I tried to look at how an `Int32` became a `string`, and my day was worse for it
+  - As far as I'm concerned, the code blocks below are simply magic.
+    - I was just trying to learn about `Int32` and instead I'm reading absolute atrocities and I don't like it.
+- I got stunned by the existence of `*--bufferEnd` it's "decrementing the pointer operand"... We'll pretend I know what that means.
+  - I tried to test this out and was blocked by being unable to write `unsafe` code. I had to add <AllowUnsafeBlocks> to the `.csproj`
+  - The [`fixed`](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/fixed) keyword is super interesting... and I have no clue how to use it :)
+  
+```csharp
+    private static unsafe string UInt32ToDecStr_NoSmallNumberCheck(uint value)
+    {
+      int length = FormattingHelpers.CountDigits(value);
+      string smallNumberCheck = string.FastAllocateString(length);
+      IntPtr num;
+      if (smallNumberCheck == null)
+      {
+        num = IntPtr.Zero;
+      }
+      else
+      {
+        fixed (char* chPtr = &smallNumberCheck.GetPinnableReference())
+          num = (IntPtr) chPtr;
+      }
+      Number.UInt32ToDecChars<char>((char*) (num + (IntPtr) length * 2), value);
+      // ISSUE: fixed variable is out of scope
+      // ISSUE: __unpin statement
+      __unpin(chPtr);
+      return smallNumberCheck;
+    }
+    
+    internal static unsafe TChar* UInt32ToDecChars<TChar>(TChar* bufferEnd, uint value) where TChar : unmanaged, IUtfChar<TChar>
+    {
+      if (value >= 10U)
+      {
+        while (value >= 100U)
+        {
+          bufferEnd -= 2;
+          (uint Quotient, uint Remainder) tuple = Math.DivRem(value, 100U);
+          value = tuple.Quotient;
+          Number.WriteTwoDigits<TChar>(tuple.Remainder, bufferEnd);
+        }
+        if (value >= 10U)
+        {
+          bufferEnd -= 2;
+          Number.WriteTwoDigits<TChar>(value, bufferEnd);
+          return bufferEnd;
+        }
+      }
+      *--bufferEnd = TChar.CastFrom(value + 48U);
+      return bufferEnd;
+    }
+```
+
+
+# What were the differences?
+
+It seems like a lot of the basic math operations are skipped, which makes sense. The interesting parts come with conversion to `string` and formatting along with that.
+
+All I was wanting to know was how an `int` became a `string`. Instead I opened a whole Pandora's box. I learned a whole lot... just not a lot about `Int32`.
+
+I didn't love that I just got confused by how that conversion code worked, however I think that it brings up some things that I should explore in the future:
+
+- Pointers + References
+  - Pointer Operands
+- Char
