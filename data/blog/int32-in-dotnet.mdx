@@ -27,7 +27,7 @@ Comparison should be easy, maybe the bits are assessed individually? I'm curious
   - As far as I'm concerned, the code blocks below are simply magic.
     - I was just trying to learn about `Int32` and instead I'm reading absolute atrocities and I don't like it.
 - I got stunned by the existence of `*--bufferEnd` it's "decrementing the pointer operand"... We'll pretend I know what that means.
-  - I tried to test this out and was blocked by being unable to write `unsafe` code. I had to add <AllowUnsafeBlocks> to the `.csproj`
+  - I tried to test this out and was blocked by being unable to write `unsafe` code. I had to add `<AllowUnsafeBlocks>true</AllowUnsafeBlocks>` to the `.csproj`
   - The [`fixed`](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/fixed) keyword is super interesting... and I have no clue how to use it :)
   
 ```csharp
