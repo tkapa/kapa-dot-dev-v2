@@ -1,0 +1,53 @@
+---
+title: 'Async/Await in .NET - Things I learned #1'
+date: '2024-05-02'
+tags: ['dotnet', 'braindump', 'csharp']
+draft: false 
+summary: 'This time I watched a great video on async/await by Stephen Toub and Scott Hanselman. Here are some things I learned.'
+---
+
+Here's what I looked like while learning about how `async/await` works in .NET:
+
+![A happy raccoon dancing](/static/images/blog/async-await-in-csharp.gif)
+
+I was recently recommended this great video by Stephen Toub and Scott Hanselman, and immediately knew I would need to break blogs down into smaller parts.
+![async/await](https://www.youtube.com/watch?v=R-z2Hv-7nxk)
+
+
+# What do I think they are?
+It's said in the video, but `async/await` has been around for so long that we almost take it for granted. I know that I just kind of slap it on methods and hope for the best, vaguely knowing what it does.
+
+From my understanding `async/await` should:
+- Execute delegate functions in a threadpool
+- Allow for non-blocking code
+- Handle errors (??? somehow)
+
+# 5 things that I learned while watching this video
+- `Action` are delegates that are already defined that are parameterless and void returning.
+- .NET has 2 kinds of `Thread`:
+    - Foreground threads: These are threads that keep the application alive. If the last foreground thread exits, the application exits.
+    - Background threads: These are threads that do not keep the application alive. If the last foreground thread exits, the application exits.
+- How does data from one thread get passed back to the continuation?
+    - There's a type called `AsyncLocal<T>` that can be "passed" between threads
+    - .NET uses something called the Execution Context that can take care of this for you
+- How does the program know how to wait?
+    - `Task`s have a load of logic behind them, more than you might think at first glance
+
+# Where I stopped in the video 
+Here's where I stopped https://youtu.be/R-z2Hv-7nxk?si=iS4aJSCt1n7Wctbt&t=2007
+
+There's already a boatload of information here and there's been a lot of things that I didn't think about when initially coming up with how I thought that this would work. 
+
+So far:
+- Stephen implemented his own threadpool
+    - Has a `static` `readonly` `BlockingCollection<Action, ExecutionContext?>` that is used to queue up work
+    - Has a method to queue up work
+    - Implements a constructor that starts a number of background threads to process the work
+        - These threads will use the `ExecutionContext` if it is provided
+    
+- Stephen also began implementing his own `Task` class
+    - Has private fields for if the task is completed, if it has an exception, if it has a continuation and the `ExecutionContext`.
+    - Has methods `SetResult` and `SetException` which calls `Complete` and handles the result accordingly
+    - Has `void ContinueWith(Action action)` which tries to invoke the continuation;
+    - Has `void Wait()` which we will get to next time :)
+
