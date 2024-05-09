@@ -89,6 +89,11 @@ module.exports = () => {
           destination: '/blog/:path*',
           permanent: true,
         },
+        {
+          source: '/blog/async-await-in-dotnet',
+          destination: '/blog/async-await-in-net/part-1',
+          permanent: true,
+        },
       ]
     },
     webpack: (config, options) => {
