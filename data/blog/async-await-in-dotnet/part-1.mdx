@@ -50,6 +50,6 @@ So far:
 - Stephen also began implementing his own `Task` class
     - Has private fields for if the task is completed, if it has an exception, if it has a continuation and the `ExecutionContext`.
     - Has methods `SetResult` and `SetException` which calls `Complete` and handles the result accordingly
-    - Has `void ContinueWith(Action action)` which tries to invoke the continuation;
+    - Has `void ContinueWith(Action action)` which tries to invoke the continuation
     - Has `void Wait()` which we will get to next time :)
 

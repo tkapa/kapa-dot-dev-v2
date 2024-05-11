@@ -2,12 +2,11 @@
 title: 'Async/Await in .NET - Things I learned #2'
 date: '2024-05-03'
 tags: ['dotnet', 'braindump', 'csharp']
-draft: true 
+draft: false
 summary: 'Continuing on from Part 1, let's finish off the video.'
 ---
 
-TODO: Move this to a real part series (Find out from the Tailwind Starter)
-Let's continue on from [Part 1](/blog/async-await-in-dotnet)
+Let's continue on from [Part 1](/blog/async-await-in-dotnet/part-1) of Async/Await in .NET.
 
 ![A happy raccoon dancing](/static/images/blog/async-await-in-csharp.gif)
 
@@ -16,6 +15,35 @@ Let's continue on from [Part 1](/blog/async-await-in-dotnet)
 </div>
 
 # 5 more things that I learned while watching this video
+- `ManualResetEventSlim` is a C# class that represents a "thread synchronization event". 
+- Using the `yield` keyword to return a `MyTask.Delay()` can then be "awaited"
+- `MyTask` uses itself a remarkable amount in order to implement much of its functions
+- `MyTask` implements `Awaiter: INotifyCompletion` which allows it to be awaited using the actual `await` keyword
+
 - How `Wait()` is implemented
     - Checks if `_completed`
-    - Creates a `ManualResetEventSlim`
+    - Creates a `ManualResetEventSlim` if not `_completed`. This can then be waited on
+    - If exception is not null, will use `ExceptionDispatchInfo.Throw()` to append the error to the StackTrace
+
+- How `Run()` is implemented
+    - Creates a new `MyTask`
+    - Queues the action in `MyThreadPool`
+    - Executes `action()`
+    - Catches exceptions if needed
+    - Calls `SetResult()`
+
+- How `WhenAll()` is implemented
+    - Takes a `List<MyTask> t`
+    - Creates a new `MyTask`
+    - Loops through the list of tasks and adds an `Action` continuation to each task
+    - Decrements a counter when a task is completed using `Interlocked.Decrement(ref _count)`
+    - Calls `t.SetResult()` when `_count` is 0
+
+- How `Delay()` is implemented
+    - Creates a new `MyTask`
+    - Uses a `Timer` to call `SetResult()` after a certain amount of time
+
+# Conclusion
+There's an exceptional amount of work that the `Task` class does to be generic. But it remains relatively simple at its core.
+
+The great takeaway from this video is to know that you don't need to deep-dive on everything. But it's always great to look one level under the hood and just take a look at how the tools you use every day work.
