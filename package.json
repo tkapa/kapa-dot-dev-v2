@@ -18,7 +18,8 @@
     "@vercel/speed-insights": "^1.0.1",
     "autoprefixer": "^10.4.13",
     "contentlayer": "0.3.4",
-    "esbuild": "^0.18.11",
+    // Add ^ to make this build in Docker
+    "esbuild": "0.18.11",
     "geist": "^1.2.2",
     "github-slugger": "^1.4.0",
     "gray-matter": "^4.0.2",
