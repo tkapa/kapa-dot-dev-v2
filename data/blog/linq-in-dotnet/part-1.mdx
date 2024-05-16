@@ -18,7 +18,7 @@ This one will be a part series as well, strap in for the ride!
 # What do I think LINQ is?
 In the same vein as Async/Await, LINQ is something that I've used a lot but couldn't really conceive of how it works. 
 
-Ostensibly it's just a list of helper functions. Things like `First` or `Where` I'd imagine take a delegate and apply it to a list. Simple, no? I'm anticipating that I might find out that it's a bit more complicated than that.
+Ostensibly it's just a list of helper functions. Things like `First` `Select` or `Where` I'd imagine take a delegate and apply it to a list. Simple, no? I'm anticipating that I might find out that it's a bit more complicated than that.
 
 # 5 things that I learned while watching this video
 
@@ -67,4 +67,19 @@ static IEnumerable<int> GetNumbers()
 - So `GetNumbers()` can somehow store it's state between calls for `MoveNext()`
 
 - `Select()` is one of the most basic APIs we use. 
-    - It's quite literally a foreach loop that applies a function to each element in a list.
+    - It's quite literally a `foreach` loop that `yield return`s the result of the delegate passed to it.
+
+- Iterators do not execute until `MoveNext()` is called.
+    - So how do we get exceptions to throw e.g. `ArgumentNullException`?
+    - A `static` iterator method is implemented within the function that does the `foreach` loop.
+
+- `sealed` classes provide a performance benefit. Even though Microsoft doesn't recommend using `sealed`.
+    - They also have a tool the identifies classes that aren't inherited, and can benefit from that performance increase.
+
+# Where I stopped in the video
+
+I got a little bit carried away. Only 25 minutes in and there's already a ton of information here.
+
+So far:
+- Stephen has implemented `Select()`
+- Stephen has started to implement his own `SelectManualEnumerable<TSource, Tresult>` to show us how it's implemented.
