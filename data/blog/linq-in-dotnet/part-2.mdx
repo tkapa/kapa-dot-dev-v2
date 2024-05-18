@@ -2,6 +2,65 @@
 title: 'LINQ in .NET - Things I learned #2'
 date: '2024-05-18'
 tags: ['dotnet', 'braindump', 'csharp']
-draft: true 
-summary: 'Another video! This time we jump into LINQ with Stephen Toub and Scott Hanselman.'
+draft: false 
+summary: 'Continuing on with Deep Dive on LINQ with Stephen Toub'
 ---
+
+We're back with part 2! You can find part 1 [here](/blog/linq-in-dotnet/part-1)!
+
+I've got a long train ride, so I'm not sure where I'll stop with this one.
+
+Here's where we left off:
+- We're trying to re-implement `Select()` from scratch
+- Stephen has implemented `SelectCompiler()`
+- Stephen has started to implement his own `SelectManualEnumerable<TSource, TResult>` to show us how it's implemented
+- Stephen also started to implement his own `Enumerator: IEnumerator<TResult>` class
+
+Here's the video! Let's get into it.
+<div class="mb-4">
+    <YoutubeEmbed id="xKr96nIyCFM" />
+</div>
+## 5... or more things I learned watching this video
+- `object Current` in `IEnumerator` has nullable reference types disabled in the .NET Source. "Oblivious" as the source puts it.
+    - A great reminder that https://source.dot.net/ exists.
+
+- `Reset()` will throw a `NotSupportedException()`. Most Enumerators in .NET will do this... pretty interesting.
+
+- `throw e` is not the same as `throw`
+    - `throw e` will change the stacktrace information!!
+
+``` csharp
+try {
+    ...
+}
+catch (Exception e) {
+    throw e;
+}
+```
+Bad Example: `throw e` will change the stacktrace information!
+
+``` csharp
+try {
+    ...
+}
+catch {
+    throw;
+}
+```
+Good Example: `throw` knows how to preserve the stacktrace information on its own.
+
+- Enumerators track their state so that they know where to resume from.
+    - e.g. 1 = initialise enumerator, 2 = perform `MoveNext()`
+
+- Watching Stephen code is interesting. I've never thought about zoom level as a tool to view my progress in implementation.
+
+- You can use `_` to separate numbers?! `10_000` is the same as `10000`. You can bet I'll probably use that for visual clarity.
+
+## Let's leave it there for now
+
+The end of the train ride is coming up. Let's continue on the way back.
+
+Where we left off:
+- Looking at the profiler, Stephen's implementation creates an extra object.
+- Stephen refactored out the `sealed Enumerator` class and let's the `SelectManualEnumerable` be it's own `Enumerator` instead.
+- However, now things are broken, an extra state needs to be accounted for.
