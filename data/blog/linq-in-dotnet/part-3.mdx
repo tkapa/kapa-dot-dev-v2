@@ -1,0 +1,41 @@
+---
+title: 'LINQ in .NET - Things I learned #3'
+date: '2024-05-23'
+tags: ['dotnet', 'braindump', 'csharp']
+draft: false 
+summary: 'Continuing on with Deep Dive on LINQ with Stephen Toub'
+---
+
+We're back with part 3! You can find part 2 [here](/blog/linq-in-dotnet/part-2)!
+
+I lied I didn't do this on the train ride home.
+
+Where we left off:
+- Stephen refactored out the `sealed Enumerator` class and let's the `SelectManualEnumerable` be it's own `Enumerator` instead.
+- Looking at the profiler, Stephen's implementation creates an extra object.
+- However, now things are broken, an extra state needs to be accounted for.
+
+Here's the video! Let's get into it.
+<div class="mb-4">
+    <YoutubeEmbed id="xKr96nIyCFM" />
+</div>
+## The last few things I learned watching this video
+
+- **BenchmarkDotNet**, this seems like something that I'd want to explore in the future.
+    - A NuGet package dedicated to benchmarking .NET apps. Seems like something that I'd like to try out in the future.
+    - Writing these benchmarks looks very similar to writing normal Unit tests, but tests performance rather than function.
+
+- LINQ is incredibly fast
+    - There are specific optimised `Select` Iterators in LINQ for various types (`List<T>`, `Range` etc.)
+    - Not only this, but there's also specific implementations for LINQ combinations (`WhereSelectArrayIterator`)
+
+## Conclusion
+
+I'm surprised that I was, at the core, correct about how these things were implemented in Part 1. But there's so much meat to exactly how Iterators work, that I was blown away.
+
+I found out a lot about how Iterators worked in this video. There's something to be said about the way that Stephen and Scott hold the viewer's hands all throughout as you go deeper and learn more. All so that you can finally understand how much work LINQ must be doing behind the scenes to support all of our stupid LINQ statements. 
+
+Rightfully so, there's another "Part 2" video! So I look forward to jumping into that next time.
+<div class="mb-4">
+    <YoutubeEmbed id="W4-NVVNwCWs" />
+</div>
