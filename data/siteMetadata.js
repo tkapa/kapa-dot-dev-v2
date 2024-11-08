@@ -6,7 +6,7 @@ const siteMetadata = {
   description: 'A blog created by Tylah Kapa',
   language: 'en-us',
   theme: 'system', // system, dark or light
-  siteUrl: 'https://v2.kapa.dev',
+  siteUrl: 'https://www.kapa.dev',
   siteRepo: 'https://github.com/tkapa/kapa-dot-dev-v2',
   siteLogo: '/static/images/logo.png',
   socialBanner: '/static/images/twitter-card.png',
